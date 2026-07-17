@@ -7,7 +7,7 @@ description = "zsh-z frecency directory jumper ported to a native zshrs plugin"
 
 [lib]
 name = "zsh_z"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 znative = "0.12"

@@ -413,3 +413,78 @@ fn z_complete(host: &Host, args: &Args) -> c_int {
     }
     0
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_line_valid_and_trims() {
+        let e = parse_line("/home/u/proj|12|1700000000").unwrap();
+        assert_eq!(e.path, "/home/u/proj");
+        assert_eq!(e.rank, 12.0);
+        assert_eq!(e.time, 1_700_000_000);
+        let e2 = parse_line("/a| 3.5 | 42 ").unwrap();
+        assert_eq!(e2.rank, 3.5);
+        assert_eq!(e2.time, 42);
+    }
+
+    #[test]
+    fn parse_line_rejects_malformed() {
+        assert!(parse_line("no-pipes").is_none());
+        assert!(parse_line("/only|onepipe").is_none()); // one pipe -> last<=first
+        assert!(parse_line("/a|notnum|100").is_none());
+        assert!(parse_line("/a|5|notnum").is_none());
+        assert!(parse_line("").is_none());
+    }
+
+    #[test]
+    fn fmt_rank_integer_vs_float() {
+        assert_eq!(fmt_rank(3.0), "3");
+        assert_eq!(fmt_rank(0.0), "0");
+        assert_eq!(fmt_rank(3.5), "3.5");
+        assert_eq!(fmt_rank(1.25), "1.25");
+    }
+
+    #[test]
+    fn frecency_formula_and_methods() {
+        let e = Entry {
+            path: "/x".into(),
+            rank: 10.0,
+            time: 1000,
+        };
+        // just visited (dx=0): rank * (3.75/1 + 0.25) = rank * 4
+        assert_eq!(score(&e, Method::Frecency, 1000), 40.0);
+        // ancient (dx -> inf): converges to rank * 0.25 = 2.5
+        let old = score(&e, Method::Frecency, 1000 + 1_000_000_000);
+        assert!((old - 2.5).abs() < 0.01, "got {old}");
+        assert_eq!(score(&e, Method::Rank, 1000), 10.0);
+        assert_eq!(score(&e, Method::Time, 1000), 0.0);
+    }
+
+    #[test]
+    fn glob_match_star_qmark_backtrack() {
+        assert!(glob_match(b"*foo*", b"a/foo/b")); // * crosses /
+        assert!(glob_match(b"?oo", b"foo"));
+        assert!(glob_match(b"*", b"anything"));
+        assert!(glob_match(b"foo*", b"foobar"));
+        assert!(glob_match(b"*bar", b"foobar"));
+        assert!(!glob_match(b"abc", b"abd"));
+        assert!(!glob_match(b"?", b"ab")); // ? is exactly one char
+        assert!(!glob_match(b"*x", b"xy"));
+    }
+
+    #[test]
+    fn make_pattern_wrap_and_space_runs() {
+        assert_eq!(make_pattern("foo", false), "*foo*");
+        assert_eq!(make_pattern("foo", true), "foo*");
+        assert_eq!(make_pattern("foo bar", false), "*foo*bar*");
+        assert_eq!(make_pattern("foo   bar", false), "*foo*bar*");
+    }
+
+    #[test]
+    fn shquote_escapes() {
+        assert_eq!(shquote("plain"), "'plain'");
+        assert_eq!(shquote("it's"), r"'it'\''s'");
+    }
+}
