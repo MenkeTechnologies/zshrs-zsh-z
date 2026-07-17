@@ -19,7 +19,7 @@
 
 [zsh-z](https://github.com/agkozak/zsh-z) — the frecency directory jumper (`z <partial>` cd's to the directory you visit most, weighted by how recently and how often) — ported to a **native [zshrs](https://github.com/MenkeTechnologies/zshrs) plugin**. A faithful reimplementation in Rust: the `~/.z` datafile format, the frecency formula, the aging rule, the matching, and the `z` options are all reproduced.
 
-### [`zshrs`](https://github.com/MenkeTechnologies/zshrs) &middot; [`znative`](https://github.com/MenkeTechnologies/zshrs/blob/main/docs/ZPM.md) &middot; [`upstream`](https://github.com/agkozak/zsh-z)
+### [`zshrs`](https://github.com/MenkeTechnologies/zshrs) &middot; [`znative`](https://github.com/MenkeTechnologies/zshrs/blob/main/docs/ZNATIVE.md) &middot; [`upstream`](https://github.com/agkozak/zsh-z)
 
 ---
 
@@ -52,7 +52,7 @@ z -x            → forget the current directory
 znative load MenkeTechnologies/zshrs-zsh-z
 ```
 
-Put that one line in your `.zshrc`. [znative](https://github.com/MenkeTechnologies/zshrs/blob/main/docs/ZPM.md), zshrs's package manager, installs the plugin on the first shell start — clones it, runs `cargo build --release`, and `zmodload -R`s the resulting `libzsh_z` — then loads it from the store, zero-network, on every start after. No separate install step; then `z <dir>` jumps.
+Put that one line in your `.zshrc`. [znative](https://github.com/MenkeTechnologies/zshrs/blob/main/docs/ZNATIVE.md), zshrs's package manager, installs the plugin on the first shell start — clones it, runs `cargo build --release`, and `zmodload -R`s the resulting `libzsh_z` — then loads it from the store, zero-network, on every start after. No separate install step; then `z <dir>` jumps.
 
 ### Manual build
 
