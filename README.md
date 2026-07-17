@@ -27,16 +27,18 @@ actual `cd` is delegated to the shell so `$PWD`/hooks stay correct.
 
 ## Install
 
-With **zpm** (zshrs's package manager):
-
 ```sh
-zpm add MenkeTechnologies/zshrs-zsh-z
+zpm load MenkeTechnologies/zshrs-zsh-z
 ```
 
-`zpm` clones, `cargo build --release`s the cdylib, and `zmodload -R`s it. Add
-`zpm load zsh-z` to your `.zshrc` to load at startup. Then `z <dir>` jumps.
+Put that one line in your `.zshrc`.
+[zpm](https://github.com/MenkeTechnologies/zshrs/blob/main/docs/ZPM.md),
+zshrs's package manager, installs the plugin on the first shell start — clones
+it, runs `cargo build --release`, and `zmodload -R`s the resulting `libzsh_z`
+— then loads it from the store, zero-network, on every start after. No
+separate install step; then `z <dir>` jumps.
 
-## Build manually
+### Manual build
 
 ```sh
 cargo build --release
