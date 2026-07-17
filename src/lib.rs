@@ -264,7 +264,11 @@ fn find_matches(
             imatches.push((e.path, sc));
         }
     }
-    let pick = if !matches.is_empty() { &mut matches } else { &mut imatches };
+    let pick = if !matches.is_empty() {
+        &mut matches
+    } else {
+        &mut imatches
+    };
     pick.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
     let best = pick.first().map(|(p, _)| p.clone());
     (best, std::mem::take(pick))
