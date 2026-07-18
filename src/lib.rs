@@ -14,6 +14,7 @@
 //! Recording is driven by a `chpwd` hook (`z --add "$PWD"`) that the plugin
 //! installs at its first `z` invocation (evaluating shell during plugin load
 //! is unsafe), so tracking begins once you first use `z`.
+#![allow(clippy::not_unsafe_ptr_arg_deref)]
 
 use std::os::raw::c_int;
 use std::sync::atomic::{AtomicBool, Ordering};
