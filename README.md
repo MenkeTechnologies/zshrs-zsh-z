@@ -42,7 +42,19 @@ z -e proj       → echo the best match (don't cd)
 z -c src        → restrict to subdirs of $PWD
 z -r / z -t     → rank / recency ordering instead of frecency
 z -x            → forget the current directory
+z -h            → usage (also --help)
+
+z --add PATH    → record a visit; this is what the chpwd hook calls
+z --complete Q  → emit completion matches for Q
 ```
+
+### Environment
+
+| variable            | legacy alias        | default | effect                                        |
+| ------------------- | ------------------- | ------- | ---------------------------------------------- |
+| `ZSHZ_DATA`         | `_Z_DATA`           | `~/.z`  | datafile path                                  |
+| `ZSHZ_MAX_SCORE`    | `_Z_MAX_SCORE`      | `9000`  | Σrank ceiling; past it every rank ages `* 0.99` |
+| `ZSHZ_EXCLUDE_DIRS` | `_Z_EXCLUDE_DIRS`   | unset   | directories never recorded                     |
 
 ---
 
