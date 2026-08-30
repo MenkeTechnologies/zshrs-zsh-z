@@ -1,6 +1,6 @@
 [package]
 name = "zsh_z"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 publish = false
 description = "Native zshrs plugin porting zsh-z frecency directory jumper"
