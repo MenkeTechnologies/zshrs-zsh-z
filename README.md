@@ -78,7 +78,7 @@ z <partial-dir>
 
 ## [0x02] USAGE
 
-`z <partial>` jumps to the best-matching directory; the flags above list, echo, restrict, re-order, or forget. Directory tracking is automatic once the plugin is loaded.
+`z <partial>` jumps to the best-matching directory; the flags above list, echo, restrict, re-order, or forget. Directory tracking starts at the first `z` call, which installs the `chpwd` hook; directories visited before that are not recorded.
 
 ---
 
